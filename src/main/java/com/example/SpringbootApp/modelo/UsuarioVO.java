@@ -28,16 +28,30 @@ public class UsuarioVO {
 
   private String nif;
 
-  private LocalDate fechaalta;
+  private String name;
+
+  private String lastName;
+
+  private LocalDate dateBirth;
+
+  private LocalDate dateSave;
 
   @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
   private List<RolUsuarioVO> registros;
 
+
   // CONSTRUCTOR
-  public UsuarioVO(String nif, LocalDate fechaalta, List<RolUsuarioVO> roles) {
+  public UsuarioVO(String nif, String name, String lastName, LocalDate dateBirth,
+      LocalDate dateSave, List<RolUsuarioVO> registros) {
     super();
     this.nif = nif;
-    this.fechaalta = fechaalta;
-    this.registros = roles;
+    this.name = name;
+    this.lastName = lastName;
+    this.dateBirth = dateBirth;
+    this.dateSave = dateSave;
+    this.registros = registros;
   }
+
+
+
 }

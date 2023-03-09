@@ -2,7 +2,7 @@
 #configuracion para el acceso a base de datos
 spring:
   datasource:
-    url: 'jdbc:mysql://0.0.0.0:3351/tarea1'
+    url: jdbc:mysql://0.0.0.0:3351/tarea1
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: root_password
@@ -13,8 +13,14 @@ spring:
     show-sql: true
 
   
+
+
+  
+  
+  
 endpoints:
   usuarioController:
     getUsuarioByNif:  getUsuarioByNif  
     insertUsuario:  insertUsuario  
+    getUsuariosByNameAndLastName: getUsuariosByNameAndLastName
     

@@ -27,7 +27,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     return usuarioRepo.findByNif(nif);
   }
-  
+
   @Override
   public Optional<UsuarioVO> findUsuarioById2(String nif) {
     return usuarioRepo.findByNif2(nif);
@@ -42,6 +42,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 
   public Optional<List<String>> findNamesWithRol(String rol) {
     return usuarioRepo.findNamesWithRol(rol);
+  }
+
+  @Override
+  public Optional<List<UsuarioVO>> findUsuariosByNameAndLastName(String name, String lastName) {
+    // TODO Auto-generated method stub
+    return usuarioRepo.findUsuariosByNameAndLastName(name, lastName);
   }
 
 
