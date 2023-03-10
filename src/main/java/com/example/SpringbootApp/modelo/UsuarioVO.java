@@ -42,13 +42,13 @@ public class UsuarioVO {
 
   // CONSTRUCTOR
   public UsuarioVO(String nif, String name, String lastName, LocalDate dateBirth,
-      LocalDate dateSave, List<RolUsuarioVO> registros) {
+      List<RolUsuarioVO> registros) {
     super();
     this.nif = nif;
     this.name = name;
     this.lastName = lastName;
     this.dateBirth = dateBirth;
-    this.dateSave = dateSave;
+    this.dateSave = LocalDate.now();
     this.registros = registros;
   }
 

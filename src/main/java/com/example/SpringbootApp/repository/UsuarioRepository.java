@@ -28,7 +28,7 @@ public interface UsuarioRepository extends CrudRepository<UsuarioVO, Integer> {
 
 
   @Query(
-      value = "SELECT e FROM UsuarioVO e JOIN FETCH e.registros t where e.name=?1 and e.lastName=?2")
+      value = "SELECT e FROM UsuarioVO e where e.name=?1 and e.lastName=?2")
   public Optional<List<UsuarioVO>> findUsuariosByNameAndLastName(String name, String lastName);
 
 

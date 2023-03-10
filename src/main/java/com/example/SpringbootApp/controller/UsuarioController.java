@@ -1,18 +1,23 @@
 package com.example.SpringbootApp.controller;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.SpringbootApp.modelo.RolUsuarioVO;
 import com.example.SpringbootApp.modelo.UsuarioVO;
 import com.example.SpringbootApp.servicio.UsuarioService;
 
@@ -27,15 +32,24 @@ public class UsuarioController {
 
 
   // INSERT
-  @GetMapping("${endpoints.usuarioController.insertUsuario}")
-  public ResponseEntity<Optional<UsuarioVO>> insertUsuario(@PathVariable final String nif) {
+  @PostMapping("${endpoints.usuarioController.insertUsuario}")
+  @ResponseBody
+  public ResponseEntity<Optional<UsuarioVO>> insertUsuario(
+      @RequestParam(name = "nif") final String nif,
+      @RequestParam(name = "name") final String name,
+      @RequestParam(name = "lastName") final String lastName,
+      @RequestParam(name = "dateBirth") @DateTimeFormat(
+          pattern = "yyyy-MM-dd") final LocalDate dateBirth) {
 
-    Optional<UsuarioVO> usuario = usuarioService.findUsuarioByNif(nif);
+    UsuarioVO usuario =
+        new UsuarioVO(nif, name, lastName, dateBirth, new ArrayList<RolUsuarioVO>());
 
-    if (usuario.isPresent()) {
-      return new ResponseEntity<Optional<UsuarioVO>>(usuario, HttpStatus.OK);
+    Optional<UsuarioVO> usuSaved = Optional.of(usuarioService.save(usuario));
+
+    if (usuSaved.isPresent()) {
+      return new ResponseEntity<Optional<UsuarioVO>>(usuSaved, HttpStatus.OK);
     } else {
-      return new ResponseEntity<Optional<UsuarioVO>>(usuario, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<Optional<UsuarioVO>>(usuSaved, HttpStatus.NOT_FOUND);
     }
   }
 

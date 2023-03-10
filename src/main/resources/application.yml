@@ -8,16 +8,9 @@ spring:
     password: root_password
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     generate-ddl: true
     show-sql: true
-
-  
-
-
-  
-  
-  
 endpoints:
   usuarioController:
     getUsuarioByNif:  getUsuarioByNif  
