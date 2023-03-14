@@ -66,6 +66,15 @@ public class UserController {
     }
   }
 
+  /**
+   * Update user.
+   *
+   * @param nif the nif
+   * @param name the name
+   * @param lastName the last name
+   * @param dateBirth the date birth
+   * @return the response entity
+   */
   @PostMapping("${endpoints.userController.updateUser}")
   @ResponseBody
   public ResponseEntity<Optional<UserVO>> updateUser(
@@ -75,19 +84,19 @@ public class UserController {
       @RequestParam(name = "dateBirth") @DateTimeFormat(
           pattern = "yyyy-MM-dd") final LocalDate dateBirth) {
 
-    UserVO user =
-        new UserVO(nif, name, lastName, dateBirth, new ArrayList<RolUserVO>());
+    Optional<UserVO> user = userService.findUserByNif(nif);
+    if (user.isPresent()) {
+      user.get().setLastName(name);
+      user.get().setLastName(lastName);
+      user.get().setDateBirth(dateBirth);
 
-    Optional<UserVO> usuSaved = Optional.of(userService.save(user));
+      Optional<UserVO> usuSaved = Optional.of(userService.save(user.get()));
 
-    if (usuSaved.isPresent()) {
       return new ResponseEntity<Optional<UserVO>>(usuSaved, HttpStatus.OK);
     } else {
-      return new ResponseEntity<Optional<UserVO>>(usuSaved, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<Optional<UserVO>>(HttpStatus.NOT_FOUND);
     }
   }
-
-
 
   /**
    * Gets the user filtered by nif.

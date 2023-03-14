@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Optional<UserVO> findUserById2(String nif) {
+
     return userRepo.findByNif2(nif);
   }
 
@@ -37,16 +38,16 @@ public class UserServiceImpl implements UserService {
   public Optional<UserVO> findUserById(int id) {
 
     return userRepo.findById(id);
-
   }
 
   public Optional<List<String>> findNamesWithRol(String rol) {
+
     return userRepo.findNamesWithRol(rol);
   }
 
   @Override
   public Optional<List<UserVO>> findUsersByNameAndLastName(String name, String lastName) {
-    // TODO Auto-generated method stub
+
     return userRepo.findUsersByNameAndLastName(name, lastName);
   }
 
