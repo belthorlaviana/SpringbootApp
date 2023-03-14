@@ -12,8 +12,9 @@ spring:
     generate-ddl: true
     show-sql: true
 endpoints:
-  usuarioController:
-    getUsuarioByNif:  getUsuarioByNif  
-    insertUsuario:  insertUsuario  
-    getUsuariosByNameAndLastName: getUsuariosByNameAndLastName
+  userController:
+    getUserByNif:  getUserByNif  
+    insertUser:  insertUser  
+    getUserByNameAndLastName: getUserByNameAndLastName
+    updateUser: updateUser
     

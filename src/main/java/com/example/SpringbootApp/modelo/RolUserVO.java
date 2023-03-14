@@ -16,26 +16,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "roles_usuarios",
-    uniqueConstraints = {@UniqueConstraint(columnNames = {"idusuario", "idrol"})})
-public class RolUsuarioVO {
+@Table(name = "roles_users",
+    uniqueConstraints = {@UniqueConstraint(columnNames = {"idUser", "idRol"})})
+public class RolUserVO {
   // ATRIBUTOS
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int RolUsuario;
+  private int idRolUser;
 
   @ManyToOne
-  @JoinColumn(name = "idusuario")
-  private UsuarioVO usuario;
+  @JoinColumn(name = "idUser")
+  private UserVO user;
 
   @ManyToOne
-  @JoinColumn(name = "idrol")
+  @JoinColumn(name = "idRol")
   private RolVO rol;
 
   // CONSTRUCTOR
-  public RolUsuarioVO(UsuarioVO usuario, RolVO rol) {
+  public RolUserVO(UserVO user, RolVO rol) {
     super();
-    this.usuario = usuario;
+    this.user = user;
     this.rol = rol;
   }
 

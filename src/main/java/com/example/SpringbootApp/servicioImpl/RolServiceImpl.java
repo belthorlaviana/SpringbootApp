@@ -24,9 +24,9 @@ public class RolServiceImpl implements RolService {
   }
 
   @Override
-  public Optional<RolVO> findRolesByDenominacion(String denominacion) {
+  public Optional<RolVO> findRolesByDenominacion(String denomination) {
 
-    return rolRepo.findByDenominacion(denominacion);
+    return rolRepo.findByDenomination(denomination);
   }
 
   @Override

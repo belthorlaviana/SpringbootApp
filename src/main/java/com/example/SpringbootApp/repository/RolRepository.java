@@ -10,6 +10,6 @@ import com.example.SpringbootApp.modelo.RolVO;
 @Repository
 public interface RolRepository extends CrudRepository<RolVO, Integer> {
 
-  public Optional<RolVO> findByDenominacion(String denominacion);
+  public Optional<RolVO> findByDenomination(String denomination);
 
 }

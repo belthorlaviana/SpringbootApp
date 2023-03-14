@@ -19,12 +19,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Usuarios", uniqueConstraints = @UniqueConstraint(columnNames = "nif"))
-public class UsuarioVO {
+@Table(name = "Users", uniqueConstraints = @UniqueConstraint(columnNames = "nif"))
+public class UserVO {
   // ATRIBUTOS
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int idusuario;
+  private int idUser;
 
   private String nif;
 
@@ -36,20 +36,20 @@ public class UsuarioVO {
 
   private LocalDate dateSave;
 
-  @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
-  private List<RolUsuarioVO> registros;
+  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+  private List<RolUserVO> rolUserVOregistries;
 
 
   // CONSTRUCTOR
-  public UsuarioVO(String nif, String name, String lastName, LocalDate dateBirth,
-      List<RolUsuarioVO> registros) {
+  public UserVO(String nif, String name, String lastName, LocalDate dateBirth,
+      List<RolUserVO> rolUserVOregistries) {
     super();
     this.nif = nif;
     this.name = name;
     this.lastName = lastName;
     this.dateBirth = dateBirth;
     this.dateSave = LocalDate.now();
-    this.registros = registros;
+    this.rolUserVOregistries = rolUserVOregistries;
   }
 
 

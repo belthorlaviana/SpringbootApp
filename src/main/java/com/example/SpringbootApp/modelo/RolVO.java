@@ -18,22 +18,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Roles", uniqueConstraints = @UniqueConstraint(columnNames = "denominacion"))
+@Table(name = "Roles", uniqueConstraints = @UniqueConstraint(columnNames = "denomination"))
 public class RolVO {
   // ATRIBUTOS
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int idrol;
+  private int idRol;
 
-  private String denominacion;
+  private String denomination;
 
   @OneToMany(mappedBy = "rol", fetch = FetchType.EAGER)
-  private List<RolUsuarioVO> registros;
+  private List<RolUserVO> rolUserVOregistries;
 
   // CONSTRUCTOR
-  public RolVO(String denominacion, List<RolUsuarioVO> usuarios) {
+  public RolVO(String denomination, List<RolUserVO> rolUserVOregistries) {
     super();
-    this.denominacion = denominacion;
-    this.registros = usuarios;
+    this.denomination = denomination;
+    this.rolUserVOregistries = rolUserVOregistries;
   }
 }
