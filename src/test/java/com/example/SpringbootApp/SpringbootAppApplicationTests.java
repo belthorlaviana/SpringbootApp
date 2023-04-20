@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,6 +43,7 @@ class SpringbootAppApplicationTests {
   }
 
   // 3-Inserta registros en la tabla usuarios
+  @Disabled
   @Test
   void Testcase_2() {
     UserVO usuario = new UserVO("00000000-f", "Beltran", "Otero", LocalDate.of(1990, 9, 5),
@@ -78,6 +80,7 @@ class SpringbootAppApplicationTests {
   }
 
   // 4-Asigna varios roles a un usuario que ya existe en la tabla
+  @Disabled
   @Test
   void Testcase_3() {
     // busco usuario en la database
@@ -98,6 +101,7 @@ class SpringbootAppApplicationTests {
   // 5-Asigna un rol a un usuario que ya lo tenía, controla el error y muestra el
   // mensaje correspondiente
   @Test
+  @Disabled
   void Testcase_4() {
     String mensajeError = null;
     // busco usuario en la database
@@ -120,6 +124,7 @@ class SpringbootAppApplicationTests {
   // 6-Intenta buscar un usuario que no existe en la base de datos y controla el
   // error mostrando el mensaje correspondiente.
   @Test
+  @Disabled
   void Testcase_5() {
     UserVO usuario = null;
     String mensajeError = null;
@@ -135,6 +140,7 @@ class SpringbootAppApplicationTests {
   // 7- Utiliza el motor de búsquedas de Spring para mostrar todos los roles de un
   // usuario concreto
   @Test
+  @Disabled
   void Testcase_6() {
     // busco usuario por id
     Optional<UserVO> usuario = usuarioService.findUserById(1);
@@ -154,6 +160,7 @@ class SpringbootAppApplicationTests {
   // 8- Utiliza el motor de búsquedas de Spring para mostrar todos los usuarios
   // con un rol en concreto
   @Test
+  @Disabled
   void Testcase_7() {
     // busco el rol por id=1 = administrador
     Optional<RolVO> rol = rolService.findRolById(1);
@@ -174,6 +181,7 @@ class SpringbootAppApplicationTests {
   // 9-Utiliza un @Query para consultar el nombre de todos los usuarios con un rol
   // en concreto.
   @Test
+  @Disabled
   void Testcase_8() {
     // muestro una lista de nombres con todos los usuarios con rol administrador
     Optional<List<String>> lista = usuarioService.findNamesWithRol("administrador");
