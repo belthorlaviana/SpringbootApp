@@ -43,7 +43,7 @@ class SpringbootAppApplicationTests {
   }
 
   // 3-Inserta registros en la tabla usuarios
-  @Disabled
+
   @Test
   void Testcase_2() {
     UserVO usuario = new UserVO("00000000-f", "Beltran", "Otero", LocalDate.of(1990, 9, 5),
