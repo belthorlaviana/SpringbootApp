@@ -8,7 +8,7 @@ spring:
     password: root_password
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none #pa que no borre la bbd al iniciar
     generate-ddl: true
     show-sql: true
 endpoints:

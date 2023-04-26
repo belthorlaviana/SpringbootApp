@@ -1,6 +1,8 @@
 package com.example.SpringbootApp.controller;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpRequest;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,7 +11,9 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.SpringbootApp.modelo.RolUserVO;
 import com.example.SpringbootApp.modelo.UserVO;
@@ -155,7 +161,6 @@ public class UserController {
 
 		CircuitBreaker circuitBreaker = CircuitBreaker.of("userControllerCircuitBreaker", circuitBreakerConfig);
 
-
 		// Decorar el Supplier con CircuitBreaker y Retry
 		Supplier<Optional<List<UserVO>>> decoratedSupplier = CircuitBreaker.decorateSupplier(circuitBreaker,
 				() -> userService.findUsersByNameAndLastName(name, lastName));
@@ -170,8 +175,23 @@ public class UserController {
 				return ResponseEntity.notFound().build();
 			}
 		} catch (Exception e) {
-			// Llamada fallback
-			return ResponseEntity.notFound().build();
+
+			RestTemplate restTemplate = new RestTemplate();
+			UriComponentsBuilder builder = UriComponentsBuilder
+					.fromUriString("http://localhost:8081/UserController/getUserByNameAndLastName")
+					.queryParam("name", "Beltran").queryParam("lastName", "Otero");
+
+			String url = builder.toUriString();
+
+			ResponseEntity<List<UserVO>> response = restTemplate.exchange(url, HttpMethod.GET, null,
+					new ParameterizedTypeReference<List<UserVO>>() {
+					});
+
+			Optional<List<UserVO>> optionalUserList = Optional.ofNullable(response.getBody());
+
+			return ResponseEntity.status(response.getStatusCode()).headers(response.getHeaders())
+					.body(optionalUserList);
+
 		}
 	}
 
