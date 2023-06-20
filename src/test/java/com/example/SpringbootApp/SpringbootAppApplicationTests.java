@@ -80,11 +80,11 @@ class SpringbootAppApplicationTests {
   }
 
   // 4-Asigna varios roles a un usuario que ya existe en la tabla
-  @Disabled
+
   @Test
   void Testcase_3() {
     // busco usuario en la database
-    UserVO usuario = usuarioService.findUserByNif("34567867-f").get();
+    UserVO usuario = usuarioService.findUserByNif("32456789-f").get();
     UserVO usuario2 = usuarioService.findUserByNif("99999999-f").get();
     // busco roles en la database
     RolVO rol1 = rolService.findRolesByDenominacion("administrador").get();

@@ -13,6 +13,7 @@
 	<name>SpringbootApp</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
+		<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
@@ -39,8 +40,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<dependency>
+        	<groupId>org.mapstruct</groupId>
+        	<artifactId>mapstruct</artifactId>
+        	<version>${org.mapstruct.version}</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor -->
+	<dependency>
+	    <groupId>org.mapstruct</groupId>
+	    <artifactId>mapstruct-processor</artifactId>
+	    <version>${org.mapstruct.version}</version>
+	</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -57,5 +68,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

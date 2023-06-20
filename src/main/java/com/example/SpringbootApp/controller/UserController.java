@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -17,128 +18,91 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.SpringbootApp.dto.UserDTO;
+import com.example.SpringbootApp.mapper.MapperHelper;
 import com.example.SpringbootApp.modelo.RolUserVO;
 import com.example.SpringbootApp.modelo.UserVO;
 import com.example.SpringbootApp.servicio.UserService;
 
-
-
-// TODO: Auto-generated Javadoc
-/**
- * The Class UserController.
- */
 @RestController
 @RequestMapping("/UserController")
 public class UserController {
 
-  /** The user service. */
-  @Autowired
-  private UserService userService;
+	/** The user service. */
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private MapperHelper mapper;
+
+	@PostMapping("${endpoints.userController.insertUser}")
+	@ResponseBody
+	public ResponseEntity<Optional<UserVO>> insertUser(@RequestParam(name = "nif") final String nif,
+			@RequestParam(name = "name") final String name, @RequestParam(name = "lastName") final String lastName,
+			@RequestParam(name = "dateBirth") @DateTimeFormat(pattern = "yyyy-MM-dd") final LocalDate dateBirth) {
+		
+		
+		UserVO user = new UserVO(nif, name, lastName, dateBirth, new ArrayList<RolUserVO>());
+
+		Optional<UserVO> usuSaved = Optional.of(userService.save(user));
+
+		if (usuSaved.isPresent()) {
+			return new ResponseEntity<Optional<UserVO>>(usuSaved, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Optional<UserVO>>(usuSaved, HttpStatus.NOT_FOUND);
+		}
+		
+	
+	}
+
+	@PostMapping("${endpoints.userController.updateUser}")
+	@ResponseBody
+	public ResponseEntity<Optional<UserVO>> updateUser(@RequestParam(name = "nif") final String nif,
+			@RequestParam(name = "name") final String name, @RequestParam(name = "lastName") final String lastName,
+			@RequestParam(name = "dateBirth") @DateTimeFormat(pattern = "yyyy-MM-dd") final LocalDate dateBirth) {
+
+		Optional<UserVO> user = userService.findUserByNif(nif);
+		if (user.isPresent()) {
+			user.get().setName(name);
+			user.get().setLastName(lastName);
+			user.get().setDateBirth(dateBirth);
+
+			Optional<UserVO> usuSaved = Optional.of(userService.save(user.get()));
+
+			return new ResponseEntity<Optional<UserVO>>(usuSaved, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Optional<UserVO>>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	
+	@GetMapping("${endpoints.userController.getUserByNif}/{nif}")
+	public ResponseEntity<?> getUserByNif(@PathVariable final String nif) {
+
+		Optional<UserVO> user = userService.findUserByNif(nif);
 
 
-  /**
-   * Insert user in the database
-   *
-   * @param nif the nif of the User
-   * @param name the name of the user
-   * @param lastName the last name of the user
-   * @param dateBirth the date birth of the user
-   * @return the response entity if the user is inserted
-   */
-  @PostMapping("${endpoints.userController.insertUser}")
-  @ResponseBody
-  public ResponseEntity<Optional<UserVO>> insertUser(
-      @RequestParam(name = "nif") final String nif,
-      @RequestParam(name = "name") final String name,
-      @RequestParam(name = "lastName") final String lastName,
-      @RequestParam(name = "dateBirth") @DateTimeFormat(
-          pattern = "yyyy-MM-dd") final LocalDate dateBirth) {
+		if (user.isPresent()) {	
+			UserDTO userMapped=mapper.userVoToUserDto(user.get());
+			return new ResponseEntity<UserDTO>(userMapped, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("user no present", HttpStatus.NOT_FOUND);
+		}
+	}
 
-    UserVO user =
-        new UserVO(nif, name, lastName, dateBirth, new ArrayList<RolUserVO>());
+	@GetMapping("${endpoints.userController.getUserByNameAndLastName}")
+	@ResponseBody
+	public ResponseEntity<Optional<List<UserVO>>> getUserByNameAndLastName(
+			@RequestParam(name = "name") final String name, @RequestParam(name = "lastName") final String lastName) {
 
-    Optional<UserVO> usuSaved = Optional.of(userService.save(user));
+		Optional<List<UserVO>> userList = userService.findUsersByNameAndLastName(name, lastName);
 
-    if (usuSaved.isPresent()) {
-      return new ResponseEntity<Optional<UserVO>>(usuSaved, HttpStatus.OK);
-    } else {
-      return new ResponseEntity<Optional<UserVO>>(usuSaved, HttpStatus.NOT_FOUND);
-    }
-  }
+		if (userList.isPresent()) {
+			return new ResponseEntity<Optional<List<UserVO>>>(userList, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Optional<List<UserVO>>>(userList, HttpStatus.NOT_FOUND);
+		}
 
-  /**
-   * Update user.
-   *
-   * @param nif the nif
-   * @param name the name
-   * @param lastName the last name
-   * @param dateBirth the date birth
-   * @return the response entity
-   */
-  @PostMapping("${endpoints.userController.updateUser}")
-  @ResponseBody
-  public ResponseEntity<Optional<UserVO>> updateUser(
-      @RequestParam(name = "nif") final String nif,
-      @RequestParam(name = "name") final String name,
-      @RequestParam(name = "lastName") final String lastName,
-      @RequestParam(name = "dateBirth") @DateTimeFormat(
-          pattern = "yyyy-MM-dd") final LocalDate dateBirth) {
-
-    Optional<UserVO> user = userService.findUserByNif(nif);
-    if (user.isPresent()) {
-      user.get().setLastName(name);
-      user.get().setLastName(lastName);
-      user.get().setDateBirth(dateBirth);
-
-      Optional<UserVO> usuSaved = Optional.of(userService.save(user.get()));
-
-      return new ResponseEntity<Optional<UserVO>>(usuSaved, HttpStatus.OK);
-    } else {
-      return new ResponseEntity<Optional<UserVO>>(HttpStatus.NOT_FOUND);
-    }
-  }
-
-  /**
-   * Gets the user filtered by nif.
-   *
-   * @param nif the nif
-   * @return the user by nif
-   */
-  @GetMapping("${endpoints.userController.getUserByNif}/{nif}")
-  public ResponseEntity<Optional<UserVO>> getUserByNif(@PathVariable final String nif) {
-
-    Optional<UserVO> user = userService.findUserByNif(nif);
-
-    if (user.isPresent()) {
-      return new ResponseEntity<Optional<UserVO>>(user, HttpStatus.OK);
-    } else {
-      return new ResponseEntity<Optional<UserVO>>(user, HttpStatus.NOT_FOUND);
-    }
-  }
-
-  /**
-   * Gets the users filtered by name and last name.
-   *
-   * @param name the name
-   * @param lastName the last name
-   * @return the user by name and last name
-   */
-  @GetMapping("${endpoints.userController.getUserByNameAndLastName}")
-  @ResponseBody
-  public ResponseEntity<Optional<List<UserVO>>> getUserByNameAndLastName(
-      @RequestParam(name = "name") final String name,
-      @RequestParam(name = "lastName") final String lastName) {
-
-    Optional<List<UserVO>> userList =
-        userService.findUsersByNameAndLastName(name, lastName);
-
-    if (userList.isPresent()) {
-      return new ResponseEntity<Optional<List<UserVO>>>(userList, HttpStatus.OK);
-    } else {
-      return new ResponseEntity<Optional<List<UserVO>>>(userList, HttpStatus.NOT_FOUND);
-    }
-
-  }
-
+	}
 
 }

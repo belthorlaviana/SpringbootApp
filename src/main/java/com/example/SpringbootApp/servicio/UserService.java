@@ -9,7 +9,7 @@ import com.example.SpringbootApp.modelo.UserVO;
 
 public interface UserService {
 
-  public <S extends UserVO> S save(S usuario);
+  public <S extends UserVO> S save(S user);
 
   public Optional<UserVO> findUserByNif(String nif);
 
